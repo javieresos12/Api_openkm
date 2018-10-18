@@ -14,15 +14,15 @@ use openkm\bean\LockInfo;
  */
 class TestDocument {
 
-    const HOST = "http://localhost:8080/OpenKM/";
-    const USER = "okmAdmin";
-    const PASSWORD = "admin";
+    const HOST = "http://sibase.garantiascaribe.com:9392/OpenKM/";
+    const USER = "chacho";
+    const PASSWORD = "Algundia99";
     const TEST_FLD_ROOT = "/okm:root/";
-    const TEST_FLD_PATH = "/okm:root/OpenKM/img/";
-    const TEST_DOC_TEXT = "/okm:root/text.txt";
+    const TEST_FLD_PATH = "/okm:root/100_Asamblea_Accionistas/";
+    const TEST_DOC_TEXT = "/okm:root/100_Asamblea_Accionistas/Acta01.pdf";
     const TEST_DOC_PATH_1 = "/okm:root/architecture.html";
     const TEST_DOC_PATH = "/okm:root/OpenKM/architecture.html";
-    const TEST_DOC_UUID = 'e0856a93-3b25-4726-88fc-632dec7c6ab0';
+    const TEST_DOC_UUID = '97546fe1-ecda-4a63-ae9a-e6c75bc44a1b';
 
     private $ws;
 
@@ -37,30 +37,31 @@ class TestDocument {
         
         
         //getDocumentProperties
-//        $document = new Document();
-//        $document = $this->ws->getDocumentProperties(self::TEST_DOC_UUID);
-//        $this->printDocument($document, 'getDocumentProperties');
+        $document = new Document();
+        $document = $this->ws->getDocumentProperties(self::TEST_DOC_UUID);
+        $this->printDocument($document, 'getDocumentProperties');
 
         
         //content
-        //$content = $this->ws->getContent(self::TEST_DOC_UUID);
+        $content = $this->ws->getContent(self::TEST_DOC_UUID);
         /**
          * first method
          */
-        //$file = fopen(dirname(__FILE__) . '/files/' . $this->getNamePath($document->getPath()), 'w+');
-        //fwrite($file, $content);
-        //fclose($file);
+        $file = fopen(dirname(__FILE__) . '/files/' . $this->getNamePath($document->getPath()), 'w+');
+        fwrite($file, $content);
+        fclose($file);
         /**
          * second method
          */
+        #method for download an archive the openkm.
         //$this->download($document, $content);
         
         
-        //getDocumentChildren
-//        $documents = $this->ws->getDocumentChildren(self::TEST_FLD_PATH);        
-//        foreach ($documents as $document) {
-//            $this->printDocument($document, 'getDocumentChildren');
-//        }
+          //getDocumentChildren
+        $documents = $this->ws->getDocumentChildren(self::TEST_FLD_PATH);        
+        foreach ($documents as $document) {
+            $this->printDocument($document, 'getDocumentChildren');
+        }
 
         //renameDocument
         //$document = $this->ws->renameDocument(self::TEST_DOC_TEXT, 'text1.txt');
@@ -87,7 +88,7 @@ class TestDocument {
         //cancelCheckOut
         //echo '<h2>forgeCancelCheckout</h2>';
         //$this->ws->forceCancelCheckout(self::TEST_DOC_TEXT);
-        //echo '<h3>' . $this->ws->isCheckedOut(self::TEST_DOC_TEXT). '</h3>';
+        #echo '<h3>' . $this->ws->isCheckedOut(self::TEST_DOC_TEXT). '</h3>';
         
         //version
         $versions = $this->ws->getVersionHistory(self::TEST_DOC_TEXT);
@@ -95,16 +96,16 @@ class TestDocument {
             $this->printVersion($version);
         }
 
-        //if($this->ws->isLocked(self::TEST_DOC_TEXT)== 'false'){
+        if($this->ws->isLocked(self::TEST_DOC_TEXT)== 'false'){
         //lock
-        //    echo '<h2>lock</h2>';
-        //    $lockInfo =  $this->ws->lock(self::TEST_DOC_TEXT);
-        //    $this->printLockInfo($lockInfo);
-        //} else {        
+           echo '<h2>lock</h2>';
+           $lockInfo =  $this->ws->lock(self::TEST_DOC_TEXT);
+           $this->printLockInfo($lockInfo);
+        } else {        
         //unlock
-        //    echo '<h2>unlock</h2>';
-        //    $this->ws->unlock(self::TEST_DOC_TEXT);        
-        //}
+            echo '<h2>unlock2</h2>';
+         $this->ws->unlock(self::TEST_DOC_TEXT);      
+        }
         
         //forceUnlock
         //echo '<h2>forceUnlock</h2>';
@@ -125,9 +126,9 @@ class TestDocument {
         //moveDocument
         //$this->ws->moveDocument(self::TEST_DOC_TEXT, self::TEST_FLD_PATH);
         
-        //copyDocument
-        //echo '<h2>copyDocument</h2>';
-        //$this->ws->copyDocument(self::TEST_DOC_TEXT, self::TEST_FLD_PATH);
+        #copyDocument
+        echo '<h2>copyDocument</h2>';
+        $this->ws->copyDocument(self::TEST_DOC_TEXT, self::TEST_FLD_PATH);
         
         //restoreVersion
         //$this->ws->restoreVersion(self::TEST_DOC_TEXT, '1.1');
@@ -136,8 +137,8 @@ class TestDocument {
         //$this->ws->purgeVersionHistory(self::TEST_DOC_TEXT);
         
         //getVersionHistorySize
-        //echo '<h2>getVersionHistorySize</h2>';
-        //echo '<p>' . $this->ws->getVersionHistorySize(self::TEST_DOC_TEXT) . '</p>';
+        echo '<h2>getVersionHistorySize</h2>';
+        echo '<p>' . $this->ws->getVersionHistorySize(self::TEST_DOC_TEXT) . '</p>';
         
         //isValidDocument
         //echo '<h2>isValidDocument</h2>';
@@ -165,7 +166,7 @@ class TestDocument {
         header('Content-Disposition: attachment; filename="' . $this->getNamePath($document->getPath()) . '"');
         echo $content;
     }
-
+    #funcionamiento
     public function printDocument(Document $document, $title) {
         echo '<h2>Document - ' . $title . '</h2>';
         echo '<div style="margin-left:30px">';
@@ -173,7 +174,7 @@ class TestDocument {
         echo '<p><strong>Created</strong>:' . $document->getCreated() . '</p>';
         echo '<p><strong>Path</strong>:' . $document->getPath() . '</p>';
         echo '<p><strong>Permissions</strong>:' . $document->getPermissions() . '</p>';
-        echo '<p><strong>Subscribed</strong>:' . $document->isSubscribed() . '</p>';
+       # echo '<p><strong>Subscribed</strong>:' . $document->isSubscribed() . '</p>';
         echo '<p><strong>Uuid</strong>:' . $document->getUuid() . '</p>';
         echo '<p><strong>CheckedOut</strong>:' . $document->isCheckedOut() . '</p>';
         echo '<p><strong>ConvertibleDxf</strong>:' . $document->isConvertibleToDxf() . '</p>';
@@ -201,6 +202,7 @@ class TestDocument {
             echo '<p><strong>Uuid</strong>:' . $category->getUuid() . '</p>';
             echo '<p><strong>HasChildrend</strong>:' . $category->isHasChildren() . '</p>';
         }
+
         foreach ($document->getKeywords() as $keyword) {
             echo '<h3>Keywords: ' . $keyword . '</h3>';
         }
@@ -217,7 +219,7 @@ class TestDocument {
         }
         echo '</div>';
     }
-
+    #funcionamiento
     public function printVersion(Version $version) {
         echo '<h2>Version</h2>';
         echo '<p><strong>Actual</strong>:' . $version->getActual() . '</p>';
@@ -225,9 +227,9 @@ class TestDocument {
         echo '<p><strong>Checksum</strong>:' . $version->getChecksum() . '</p>';
         echo '<p><strong>Created</strong>:' . $version->getCreated() . '</p>';
         echo '<p><strong>Name</strong>:' . $version->getName() . '</p>';
-        echo '<p><strong>Size</strong>:' . $version->getSize() . '</p>';
+        echo '<p><strong>Size2</strong>:' . $version->getSize() . '</p>';
     }
-
+    #funcionamiento
     public function printLockInfo(LockInfo $lockInfo) {
         echo '<h2>LockInfo</h2>';
         echo '<p><strong>NodePath</strong>:' . $lockInfo->getNodePath() . '</p>';
